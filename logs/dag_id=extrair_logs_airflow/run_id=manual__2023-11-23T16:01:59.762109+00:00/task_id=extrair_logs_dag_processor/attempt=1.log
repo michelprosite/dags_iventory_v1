@@ -1,0 +1,24 @@
+[2023-11-23T16:02:02.363+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: extrair_logs_airflow.extrair_logs_dag_processor manual__2023-11-23T16:01:59.762109+00:00 [queued]>
+[2023-11-23T16:02:02.373+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: extrair_logs_airflow.extrair_logs_dag_processor manual__2023-11-23T16:01:59.762109+00:00 [queued]>
+[2023-11-23T16:02:02.373+0000] {taskinstance.py:1279} INFO - 
+--------------------------------------------------------------------------------
+[2023-11-23T16:02:02.374+0000] {taskinstance.py:1280} INFO - Starting attempt 1 of 2
+[2023-11-23T16:02:02.374+0000] {taskinstance.py:1281} INFO - 
+--------------------------------------------------------------------------------
+[2023-11-23T16:02:02.388+0000] {taskinstance.py:1300} INFO - Executing <Task(PythonOperator): extrair_logs_dag_processor> on 2023-11-23 16:01:59.762109+00:00
+[2023-11-23T16:02:02.394+0000] {standard_task_runner.py:55} INFO - Started process 1559 to run task
+[2023-11-23T16:02:02.397+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'extrair_logs_***', 'extrair_logs_dag_processor', 'manual__2023-11-23T16:01:59.762109+00:00', '--job-id', '10', '--raw', '--subdir', 'DAGS_FOLDER/__pycache__/get_dags_inventary.py', '--cfg-path', '/tmp/tmp0vdfd3kw']
+[2023-11-23T16:02:02.399+0000] {standard_task_runner.py:83} INFO - Job 10: Subtask extrair_logs_dag_processor
+[2023-11-23T16:02:02.457+0000] {task_command.py:388} INFO - Running <TaskInstance: extrair_logs_airflow.extrair_logs_dag_processor manual__2023-11-23T16:01:59.762109+00:00 [running]> on host 05cd78f29c0d
+[2023-11-23T16:02:02.530+0000] {taskinstance.py:1509} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=extrair_logs_***
+AIRFLOW_CTX_TASK_ID=extrair_logs_dag_processor
+AIRFLOW_CTX_EXECUTION_DATE=2023-11-23T16:01:59.762109+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=manual__2023-11-23T16:01:59.762109+00:00
+[2023-11-23T16:02:02.535+0000] {logging_mixin.py:137} INFO - Logs salvos como CSV em: /opt/***/data/logs_dag_processor.csv
+[2023-11-23T16:02:02.535+0000] {python.py:177} INFO - Done. Returned value was: None
+[2023-11-23T16:02:02.546+0000] {taskinstance.py:1323} INFO - Marking task as SUCCESS. dag_id=extrair_logs_***, task_id=extrair_logs_dag_processor, execution_date=20231123T160159, start_date=20231123T160202, end_date=20231123T160202
+[2023-11-23T16:02:02.568+0000] {local_task_job.py:208} INFO - Task exited with return code 0
+[2023-11-23T16:02:02.589+0000] {taskinstance.py:2578} INFO - 1 downstream tasks scheduled from follow-on schedule check
