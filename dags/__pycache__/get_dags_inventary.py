@@ -3,6 +3,7 @@ from airflow.operators.python import PythonOperator
 from datetime import datetime
 import os
 
+# Fução para extrais e concatenar os dados de acordo com as pastas existentes no log
 def concatenar_logs(caminho_logs, caminho_saida):
     for root, dirs, files in os.walk(caminho_logs):
         logs = []
@@ -23,9 +24,9 @@ def concatenar_logs(caminho_logs, caminho_saida):
             with open(caminho_saida_arquivo, 'a') as output_file:
                 output_file.write(log_concatenado)
 
-# Exemplo de uso
-caminho_raiz_logs = '/opt/airflow/logs/'
-caminho_saida_logs = '/opt/airflow/data'
+# Paths
+caminho_raiz_logs = '/opt/airflow/logs/' # Caminho onde se encontra os logs
+caminho_saida_logs = '/opt/airflow/data' # Caminho de destido dos logs coletados (DW, DL, Folder, Bucket, etc)
 concatenar_logs(caminho_raiz_logs, caminho_saida_logs)
 
 # Definição dos argumentos da DAG
