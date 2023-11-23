@@ -5,6 +5,7 @@ import os
 import pandas as pd
 import re
 import glob
+from datetime import datetime
 
 # Definição dos argumentos da DAG
 default_args = {
@@ -68,7 +69,55 @@ def process_logs(files_path, output_file):
     df.to_csv(output_file, index=False)
 
 # Chama a função passando o caminho dos arquivos de log e o arquivo de saída desejado
-process_logs('/opt/airflow/data/raw/*.log', '/opt/airflow/data/trusted/df_dags_inventary.csv')
+process_logs('/opt/airflow/data/raw/*.log', '/opt/airflow/data/trusted/df_dags_inventary_all.csv')
+
+# Função para encontrar as ocorrências nos arquivos .log
+def encontrar_ocorrencias(caminho):
+    ocorrencias = {
+        'AIRFLOW_CTX_DAG_OWNER': [],
+        'AIRFLOW_CTX_DAG_ID': [],
+        'AIRFLOW_CTX_TASK_ID': [],
+        'AIRFLOW_CTX_EXECUTION_DATE': [],
+        'AIRFLOW_CTX_TRY_NUMBER': [],
+        'AIRFLOW_CTX_DAG_RUN_ID': []
+    }
+    
+    # Lista todos os arquivos na pasta "novo"
+    for arquivo in os.listdir(caminho):
+        if arquivo.endswith(".log"):
+            with open(os.path.join(caminho, arquivo), 'r') as file:
+                linhas = file.readlines()
+                # Procura por padrões nas linhas do arquivo
+                for linha in linhas:
+                    for chave, valor in ocorrencias.items():
+                        padrao = f'{chave}=(.*)'
+                        match = re.search(padrao, linha)
+                        if match:
+                            valor.append(match.group(1))
+    
+    return ocorrencias
+
+# Caminho para a pasta "novo"
+caminho_pasta = '/opt/airflow/data/raw'
+
+# Encontrar as ocorrências nos arquivos .log
+ocorrencias = encontrar_ocorrencias(caminho_pasta)
+
+# Criar DataFrame com as ocorrências encontradas
+df = pd.DataFrame(ocorrencias, columns=[
+    'AIRFLOW_CTX_DAG_OWNER',
+    'AIRFLOW_CTX_DAG_ID',
+    'AIRFLOW_CTX_TASK_ID',
+    'AIRFLOW_CTX_EXECUTION_DATE',
+    'AIRFLOW_CTX_TRY_NUMBER',
+    'AIRFLOW_CTX_DAG_RUN_ID'
+])
+
+# Exibir o DataFrame
+#print(df)
+df.columns = df.columns.str.lower()
+df.to_csv('/opt/airflow/data/trusted/df_dags_inventary_id.csv')
+
 
 
 ###*******************************************************************
@@ -80,16 +129,23 @@ dag = DAG('extrair_logs_airflow', default_args=default_args, schedule_interval=N
 extrair_logs_dag_con = PythonOperator(
     task_id='extrair_logs_dag_conexao',
     python_callable=concatenar_logs,
-    op_args=[caminho_raiz_logs, caminho_saida_logs],
+    op_args=[caminho_raiz_logs, caminho_saida_logs],  # Passagem dos caminhos diretamente para a função
     dag=dag
 )
 
 process_logs_dag_con = PythonOperator(
     task_id='process_logs_dag_conexao',
     python_callable=process_logs,
-    op_args=['/opt/airflow/data/raw/*.log', '/opt/airflow/data/trusted/output.csv'],
+    op_args=['/opt/airflow/data/raw/*.log', '/opt/airflow/data/trusted/df_dags_inventary_all.csv'],
+    dag=dag
+)
+
+encontrar_ocorrencias_logs_dag_con = PythonOperator(
+    task_id='encontrar_ocorrencias_logs_dag_conexao',
+    python_callable=encontrar_ocorrencias,
+    op_args=['/opt/airflow/data/raw/'],  # Ajuste para passar apenas um argumento
     dag=dag
 )
 
 # Define a ordem de execução das tarefas na DAG
-extrair_logs_dag_con >> process_logs_dag_con
+extrair_logs_dag_con >> [process_logs_dag_con, encontrar_ocorrencias_logs_dag_con]
