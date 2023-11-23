@@ -175,3 +175,15 @@ File Path                                            PID    Runtime      # DAGs 
 ---------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
 /opt/airflow/dags/__pycache__/get_dags_inventary.py                           1           0  0.22s           2023-11-23T17:45:21
 ================================================================================
+[2023-11-23T17:45:57.606+0000] {manager.py:726} INFO - Searching for files in /opt/airflow/dags
+[2023-11-23T17:45:57.608+0000] {manager.py:729} INFO - There are 1 files in /opt/airflow/dags
+[2023-11-23T17:46:16.706+0000] {manager.py:854} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                            PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+---------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/__pycache__/get_dags_inventary.py                           1           0  0.11s           2023-11-23T17:45:51
+================================================================================
+[2023-11-23T17:46:17.710+0000] {manager.py:726} INFO - Searching for files in /opt/airflow/dags
+[2023-11-23T17:46:17.711+0000] {manager.py:729} INFO - There are 1 files in /opt/airflow/dags
